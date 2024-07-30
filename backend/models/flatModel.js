@@ -42,6 +42,6 @@ const flatSchema = new mongoose.Schema({
   reviews: [Object]
 });
 
-const Flat = mongoose.model('Flat', flatSchema);
+const Flat = mongoose.model('Flat', flatSchema, 'listingsAndReviews');
 
 module.exports = Flat;

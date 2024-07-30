@@ -3,15 +3,27 @@ const express = require('express');
 const router = express.Router();
 const Flat = require('../models/flatModel');
 
-// Получение всех квартир
+// Получение всех квартир с параметром сортировки
 router.get('/', async (req, res) => {
   try {
-    const flats = await Flat.find();
+    const { page = 1, limit = 10, sort = 'price_asc' } = req.query;
+    const skip = (page - 1) * limit;
+    const sortOptions = {
+      price_asc: { price: 1 },
+      price_desc: { price: -1 },
+      rating_desc: { 'review_scores.rating': -1 },
+    };
+    const sortBy = sortOptions[sort] || { price: 1 };
+
+    const flats = await Flat.find().skip(parseInt(skip)).limit(parseInt(limit)).sort(sortBy);
     res.json(flats);
   } catch (error) {
     res.status(500).send(error);
   }
 });
+
+
+
 
 // Получение квартиры по ID
 router.get('/:id', async (req, res) => {
@@ -58,4 +70,3 @@ router.delete('/:id', async (req, res) => {
 });
 
 module.exports = router;
-cd

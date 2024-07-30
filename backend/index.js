@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const userRoutes = require('./routes/userRoutes');
 const flatRoutes = require('./routes/flatRoutes');
 
@@ -19,7 +20,10 @@ mongoose
   });
 
 // Middleware
+
+app.use(cors()); // Включите CORS
 app.use(express.json());
+
 
 // Маршруты
 app.use('/api/users', userRoutes);
